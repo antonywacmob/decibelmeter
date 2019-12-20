@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/BaseMVVM" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/EasyBite/restaurant-app" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Satoshi Soup/satoshi-soup" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/base/baseproject" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/baseproject" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/foodmazone-android" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/healwire-android" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/joyalukkas_loyality_app" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/quizapp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/roombookingapp" vcs="Git" />
+  </component>
+</project>
