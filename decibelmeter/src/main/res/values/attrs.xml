@@ -8,7 +8,7 @@
 
 
 
-    <declare-styleable name="GaugeView">
+    <declare-styleable name="DecibelMeter">
         <attr name="showOuterShadow" format="boolean" />
         <attr name="showOuterBorder" format="boolean" />
         <attr name="showOuterRim" format="boolean" />

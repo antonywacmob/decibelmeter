@@ -6,15 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.antony.decibelmeter.GaugeView
+    <com.antony.decibelmeter.DecibelMeter
         android:id="@+id/gaugeView"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="150dp"
+        android:layout_height="180dp"
         android:paddingLeft="20dp"
         app:showNeedle="true"
         app:scaleStartAngle="140"
         app:scaleEndAngle="220"
         app:scaleEndValue="10"
+        android:background="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

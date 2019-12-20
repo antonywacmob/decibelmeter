@@ -23,14 +23,13 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 
 /**
  * Created By antony on 12/20/2019.
  */
-public class GaugeView extends View {
+public class DecibelMeter extends View {
 
     public static final int SIZE = 300;
     public static final float TOP = 0.0f;
@@ -165,7 +164,7 @@ public class GaugeView extends View {
     private long mNeedleLastMoved = -1;
     private boolean mNeedleInitialized;
 
-    public GaugeView(final Context context, final AttributeSet attrs, final int defStyle) {
+    public DecibelMeter(final Context context, final AttributeSet attrs, final int defStyle) {
         super(context, attrs, defStyle);
         readAttrs(context, attrs, defStyle);
         init();
@@ -180,65 +179,65 @@ public class GaugeView extends View {
         setTargetValue(progress);
     }
 
-    public GaugeView(final Context context, final AttributeSet attrs) {
+    public DecibelMeter(final Context context, final AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public GaugeView(final Context context) {
+    public DecibelMeter(final Context context) {
         this(context, null, 0);
     }
 
     private void readAttrs(final Context context, final AttributeSet attrs, final int defStyle) {
-        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.GaugeView, defStyle, 0);
-        mShowOuterShadow = a.getBoolean(R.styleable.GaugeView_showOuterShadow, SHOW_OUTER_SHADOW);
-        mShowOuterBorder = a.getBoolean(R.styleable.GaugeView_showOuterBorder, SHOW_OUTER_BORDER);
-        mShowOuterRim = a.getBoolean(R.styleable.GaugeView_showOuterRim, SHOW_OUTER_RIM);
-        mShowInnerRim = a.getBoolean(R.styleable.GaugeView_showInnerRim, SHOW_INNER_RIM);
-        mShowNeedle = a.getBoolean(R.styleable.GaugeView_showNeedle, SHOW_NEEDLE);
-        mShowScale = a.getBoolean(R.styleable.GaugeView_showScale, SHOW_SCALE);
-        mShowRanges = a.getBoolean(R.styleable.GaugeView_showRanges, SHOW_RANGES);
-        mShowText = a.getBoolean(R.styleable.GaugeView_showText, SHOW_TEXT);
+        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DecibelMeter, defStyle, 0);
+        mShowOuterShadow = a.getBoolean(R.styleable.DecibelMeter_showOuterShadow, SHOW_OUTER_SHADOW);
+        mShowOuterBorder = a.getBoolean(R.styleable.DecibelMeter_showOuterBorder, SHOW_OUTER_BORDER);
+        mShowOuterRim = a.getBoolean(R.styleable.DecibelMeter_showOuterRim, SHOW_OUTER_RIM);
+        mShowInnerRim = a.getBoolean(R.styleable.DecibelMeter_showInnerRim, SHOW_INNER_RIM);
+        mShowNeedle = a.getBoolean(R.styleable.DecibelMeter_showNeedle, SHOW_NEEDLE);
+        mShowScale = a.getBoolean(R.styleable.DecibelMeter_showScale, SHOW_SCALE);
+        mShowRanges = a.getBoolean(R.styleable.DecibelMeter_showRanges, SHOW_RANGES);
+        mShowText = a.getBoolean(R.styleable.DecibelMeter_showText, SHOW_TEXT);
 
-        mOuterShadowWidth = mShowOuterShadow ? a.getFloat(R.styleable.GaugeView_outerShadowWidth, OUTER_SHADOW_WIDTH) : 0.0f;
-        mOuterBorderWidth = mShowOuterBorder ? a.getFloat(R.styleable.GaugeView_outerBorderWidth, OUTER_BORDER_WIDTH) : 0.0f;
-        mOuterRimWidth = mShowOuterRim ? a.getFloat(R.styleable.GaugeView_outerRimWidth, OUTER_RIM_WIDTH) : 0.0f;
-        mInnerRimWidth = mShowInnerRim ? a.getFloat(R.styleable.GaugeView_innerRimWidth, INNER_RIM_WIDTH) : 0.0f;
-        mInnerRimBorderWidth = mShowInnerRim ? a.getFloat(R.styleable.GaugeView_innerRimBorderWidth, INNER_RIM_BORDER_WIDTH) : 0.0f;
+        mOuterShadowWidth = mShowOuterShadow ? a.getFloat(R.styleable.DecibelMeter_outerShadowWidth, OUTER_SHADOW_WIDTH) : 0.0f;
+        mOuterBorderWidth = mShowOuterBorder ? a.getFloat(R.styleable.DecibelMeter_outerBorderWidth, OUTER_BORDER_WIDTH) : 0.0f;
+        mOuterRimWidth = mShowOuterRim ? a.getFloat(R.styleable.DecibelMeter_outerRimWidth, OUTER_RIM_WIDTH) : 0.0f;
+        mInnerRimWidth = mShowInnerRim ? a.getFloat(R.styleable.DecibelMeter_innerRimWidth, INNER_RIM_WIDTH) : 0.0f;
+        mInnerRimBorderWidth = mShowInnerRim ? a.getFloat(R.styleable.DecibelMeter_innerRimBorderWidth, INNER_RIM_BORDER_WIDTH) : 0.0f;
 
-        mNeedleWidth = a.getFloat(R.styleable.GaugeView_needleWidth, NEEDLE_WIDTH);
-        mNeedleHeight = a.getFloat(R.styleable.GaugeView_needleHeight, NEEDLE_HEIGHT);
+        mNeedleWidth = a.getFloat(R.styleable.DecibelMeter_needleWidth, NEEDLE_WIDTH);
+        mNeedleHeight = a.getFloat(R.styleable.DecibelMeter_needleHeight, NEEDLE_HEIGHT);
 
-        mScalePosition = (mShowScale || mShowRanges) ? a.getFloat(R.styleable.GaugeView_scalePosition, SCALE_POSITION) : 0.0f;
-        mScaleStartValue = a.getFloat(R.styleable.GaugeView_scaleStartValue, SCALE_START_VALUE);
-        mScaleEndValue = a.getFloat(R.styleable.GaugeView_scaleEndValue, SCALE_END_VALUE);
-        mScaleStartAngle = a.getFloat(R.styleable.GaugeView_scaleStartAngle, SCALE_START_ANGLE);
-        mScaleEndAngle = a.getFloat(R.styleable.GaugeView_scaleEndAngle, 360.0f - mScaleStartAngle);
+        mScalePosition = (mShowScale || mShowRanges) ? a.getFloat(R.styleable.DecibelMeter_scalePosition, SCALE_POSITION) : 0.0f;
+        mScaleStartValue = a.getFloat(R.styleable.DecibelMeter_scaleStartValue, SCALE_START_VALUE);
+        mScaleEndValue = a.getFloat(R.styleable.DecibelMeter_scaleEndValue, SCALE_END_VALUE);
+        mScaleStartAngle = a.getFloat(R.styleable.DecibelMeter_scaleStartAngle, SCALE_START_ANGLE);
+        mScaleEndAngle = a.getFloat(R.styleable.DecibelMeter_scaleEndAngle, 360.0f - mScaleStartAngle);
 
-        mDivisions = a.getInteger(R.styleable.GaugeView_divisions, SCALE_DIVISIONS);
-        mSubdivisions = a.getInteger(R.styleable.GaugeView_subdivisions, SCALE_SUBDIVISIONS);
+        mDivisions = a.getInteger(R.styleable.DecibelMeter_divisions, SCALE_DIVISIONS);
+        mSubdivisions = a.getInteger(R.styleable.DecibelMeter_subdivisions, SCALE_SUBDIVISIONS);
 
         if (mShowRanges) {
-            mTextShadowColor = a.getColor(R.styleable.GaugeView_textShadowColor, TEXT_SHADOW_COLOR);
+            mTextShadowColor = a.getColor(R.styleable.DecibelMeter_textShadowColor, TEXT_SHADOW_COLOR);
 
-            final CharSequence[] rangeValues = a.getTextArray(R.styleable.GaugeView_rangeValues);
-            final CharSequence[] rangeColors = a.getTextArray(R.styleable.GaugeView_rangeColors);
+            final CharSequence[] rangeValues = a.getTextArray(R.styleable.DecibelMeter_rangeValues);
+            final CharSequence[] rangeColors = a.getTextArray(R.styleable.DecibelMeter_rangeColors);
             readRanges(rangeValues, rangeColors);
         }
 
         if (mShowText) {
-            final int textValueId = a.getResourceId(R.styleable.GaugeView_textValue, 0);
-            final String textValue = a.getString(R.styleable.GaugeView_textValue);
+            final int textValueId = a.getResourceId(R.styleable.DecibelMeter_textValue, 0);
+            final String textValue = a.getString(R.styleable.DecibelMeter_textValue);
             mTextValue = (0 < textValueId) ? context.getString(textValueId) : (null != textValue) ? textValue : "";
 
-            final int textUnitId = a.getResourceId(R.styleable.GaugeView_textUnit, 0);
-            final String textUnit = a.getString(R.styleable.GaugeView_textUnit);
+            final int textUnitId = a.getResourceId(R.styleable.DecibelMeter_textUnit, 0);
+            final String textUnit = a.getString(R.styleable.DecibelMeter_textUnit);
             mTextUnit = (0 < textUnitId) ? context.getString(textUnitId) : (null != textUnit) ? textUnit : "";
-            mTextValueColor = a.getColor(R.styleable.GaugeView_textValueColor, TEXT_VALUE_COLOR);
-            mTextUnitColor = a.getColor(R.styleable.GaugeView_textUnitColor, TEXT_UNIT_COLOR);
-            mTextShadowColor = a.getColor(R.styleable.GaugeView_textShadowColor, TEXT_SHADOW_COLOR);
+            mTextValueColor = a.getColor(R.styleable.DecibelMeter_textValueColor, TEXT_VALUE_COLOR);
+            mTextUnitColor = a.getColor(R.styleable.DecibelMeter_textUnitColor, TEXT_UNIT_COLOR);
+            mTextShadowColor = a.getColor(R.styleable.DecibelMeter_textShadowColor, TEXT_SHADOW_COLOR);
 
-            mTextValueSize = a.getFloat(R.styleable.GaugeView_textValueSize, TEXT_VALUE_SIZE);
-            mTextUnitSize = a.getFloat(R.styleable.GaugeView_textUnitSize, TEXT_UNIT_SIZE);
+            mTextValueSize = a.getFloat(R.styleable.DecibelMeter_textValueSize, TEXT_VALUE_SIZE);
+            mTextUnitSize = a.getFloat(R.styleable.DecibelMeter_textUnitSize, TEXT_UNIT_SIZE);
         }
 
         a.recycle();
@@ -628,10 +627,11 @@ public class GaugeView extends View {
     protected void onDraw(final Canvas canvas) {
 //        drawBackground(canvas);
 
-        final float scale = Math.min(getWidth(), getHeight());
+        final float scale = Math.min(getWidth(), getHeight())*2f;
         canvas.scale(scale, scale);
-        canvas.translate((scale == getHeight()) ? ((getWidth() - scale) / 2) / scale : 0
-                , (scale == getWidth()) ? ((getHeight() - scale) / 2) / scale : 0);
+//        canvas.translate((scale == getHeight()) ? ((getWidth() - scale) / 2) / scale : 0
+//                , (scale == getWidth()) ? ((getHeight() - scale) / 2) / scale : 0);
+        canvas.translate(-0.25f,0);
 
         if (mShowNeedle) {
             drawNeedle(canvas);

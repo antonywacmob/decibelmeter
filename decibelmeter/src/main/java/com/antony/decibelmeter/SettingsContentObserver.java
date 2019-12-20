@@ -12,9 +12,9 @@ public class SettingsContentObserver extends ContentObserver {
     int previousVolume;
     float currentProgress;
     Context context;
-    GaugeView gaugeView;
+    DecibelMeter gaugeView;
 
-    public SettingsContentObserver(Context c, Handler handler, GaugeView gaugeView) {
+    public SettingsContentObserver(Context c, Handler handler, DecibelMeter gaugeView) {
         super(handler);
         context = c;
         this.gaugeView = gaugeView;
