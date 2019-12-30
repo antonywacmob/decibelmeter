@@ -627,11 +627,11 @@ public class DecibelMeter extends View {
     protected void onDraw(final Canvas canvas) {
 //        drawBackground(canvas);
 
-        final float scale = Math.min(getWidth(), getHeight())*2f;
+        final float scale = Math.min(getWidth(), getHeight()) * 2f;
         canvas.scale(scale, scale);
 //        canvas.translate((scale == getHeight()) ? ((getWidth() - scale) / 2) / scale : 0
 //                , (scale == getWidth()) ? ((getHeight() - scale) / 2) / scale : 0);
-        canvas.translate(-0.25f,0);
+        canvas.translate(-0.25f, 0);
 
         if (mShowNeedle) {
             drawNeedle(canvas);
@@ -833,38 +833,57 @@ public class DecibelMeter extends View {
         // Logger.log.warn(String.format("velocity=%f, acceleration=%f", mNeedleVelocity,
         // mNeedleAcceleration));
 
-        if (!(Math.abs(mCurrentValue - mTargetValue) > 0.01f)) {
-            return;
-        }
+//        if (!(Math.abs(mCurrentValue - mTargetValue) > 0.01f)) {
+//            return;
+//        }
+//
+//        if (-1 != mNeedleLastMoved) {
+//            final float time = (System.currentTimeMillis() - mNeedleLastMoved) / 1000.0f;
+//            final float direction = Math.signum(mNeedleVelocity);
+//            if (Math.abs(mNeedleVelocity) < 90.0f) {
+////                mNeedleAcceleration = 5.0f * (mTargetValue - mCurrentValue);
+//                mNeedleAcceleration = 10000.0f;
+//            } else {
+//                mNeedleAcceleration = 0.0f;
+//            }
+//
+////            mNeedleAcceleration = 5.0f * (mTargetValue - mCurrentValue);
+//            mNeedleAcceleration = 10000.0f;
+//            mCurrentValue += mNeedleVelocity * time;
+//            mNeedleVelocity += mNeedleAcceleration * time;
+//
+//            if ((mTargetValue - mCurrentValue) * direction < 0.01f * direction) {
+//                mCurrentValue = mTargetValue;
+//                mNeedleVelocity = 0.0f;
+//                mNeedleAcceleration = 0.0f;
+//                mNeedleLastMoved = -1L;
+//            } else {
+//                mNeedleLastMoved = System.currentTimeMillis();
+//            }
+//
+//            invalidate();
+//
+//        } else {
+//            mNeedleLastMoved = System.currentTimeMillis();
+//            computeCurrentValue();
+//        }
 
-        if (-1 != mNeedleLastMoved) {
-            final float time = (System.currentTimeMillis() - mNeedleLastMoved) / 1000.0f;
-            final float direction = Math.signum(mNeedleVelocity);
-            if (Math.abs(mNeedleVelocity) < 90.0f) {
-                mNeedleAcceleration = 5.0f * (mTargetValue - mCurrentValue);
-            } else {
-                mNeedleAcceleration = 0.0f;
+        if (mCurrentValue == mTargetValue) {
+            mCurrentValue = mTargetValue - 15;
+            try {
+                Thread.sleep(75);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-
-            mNeedleAcceleration = 5.0f * (mTargetValue - mCurrentValue);
-            mCurrentValue += mNeedleVelocity * time;
-            mNeedleVelocity += mNeedleAcceleration * time;
-
-            if ((mTargetValue - mCurrentValue) * direction < 0.01f * direction) {
-                mCurrentValue = mTargetValue;
-                mNeedleVelocity = 0.0f;
-                mNeedleAcceleration = 0.0f;
-                mNeedleLastMoved = -1L;
-            } else {
-                mNeedleLastMoved = System.currentTimeMillis();
-            }
-
-            invalidate();
-
         } else {
-            mNeedleLastMoved = System.currentTimeMillis();
-            computeCurrentValue();
+            mCurrentValue = mTargetValue;
+            try {
+                Thread.sleep(75);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+        invalidate();
     }
 
     public void setTargetValue(final float value) {

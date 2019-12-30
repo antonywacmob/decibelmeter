@@ -14,7 +14,7 @@
         app:showNeedle="true"
         app:scaleStartAngle="140"
         app:scaleEndAngle="220"
-        app:scaleEndValue="10"
+        app:scaleEndValue="100"
         android:background="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
