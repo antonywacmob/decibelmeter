@@ -22,7 +22,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 
@@ -173,7 +172,7 @@ public class DecibelMeter extends View {
         this.context = context;
     }
 
-    public void setBytes(byte[] bytes){
+    public void setBytes(byte[] bytes) {
         DecibelMeter.this.bytes = bytes;
         invalidate();
     }
@@ -913,8 +912,7 @@ public class DecibelMeter extends View {
 //            }
 //        }
         if (this.bytes != null) {
-            Log.v("bytes", (((float) this.bytes[0] + 128)*100)/256 + "");
-            mCurrentValue = (((float) this.bytes[0] + 128)*100)/256;
+            mCurrentValue = (((float) this.bytes[0] + 128) * 100) / 256;
             invalidate();
         }
     }
