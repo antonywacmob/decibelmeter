@@ -17,12 +17,13 @@ import android.graphics.PorterDuff;
 import android.graphics.RadialGradient;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.media.audiofx.Visualizer;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 
@@ -75,7 +76,6 @@ public class DecibelMeter extends View {
     public static final int TEXT_UNIT_COLOR = Color.WHITE;
     public static final float TEXT_VALUE_SIZE = 0.3f;
     public static final float TEXT_UNIT_SIZE = 0.1f;
-    private final SettingsContentObserver mSettingsContentObserver;
 
     // *--------------------------------------------------------------------- *//
     // Customizable properties
@@ -164,19 +164,44 @@ public class DecibelMeter extends View {
     private long mNeedleLastMoved = -1;
     private boolean mNeedleInitialized;
 
+    private byte[] bytes;
+
     public DecibelMeter(final Context context, final AttributeSet attrs, final int defStyle) {
         super(context, attrs, defStyle);
         readAttrs(context, attrs, defStyle);
         init();
 
         this.context = context;
+    }
 
-        mSettingsContentObserver = new SettingsContentObserver(context, new Handler(), this);
-        context.getContentResolver().registerContentObserver(android.provider.Settings.System.CONTENT_URI, true, mSettingsContentObserver);
+    public void setVisualiser(Visualizer visualizer) {
+        try {
+            visualizer.setEnabled(false);
+            visualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
 
-        float progress = (mScaleEndValue * mSettingsContentObserver.currentProgress) / 100;
+            visualizer.setDataCaptureListener(new Visualizer.OnDataCaptureListener() {
 
-        setTargetValue(progress);
+                @Override
+                public void onWaveFormDataCapture(Visualizer visualizer, byte[] bytes,
+                                                  int samplingRate) {
+
+//                    for (byte aByte : bytes) {
+//                        Log.v("visualizerBytes", aByte + "");
+//                    }
+                    DecibelMeter.this.bytes = bytes;
+                    invalidate();
+                }
+
+                @Override
+                public void onFftDataCapture(Visualizer visualizer, byte[] bytes,
+                                             int samplingRate) {
+                }
+            }, Visualizer.getMaxCaptureRate() / 2, true, false);
+
+            visualizer.setEnabled(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public DecibelMeter(final Context context, final AttributeSet attrs) {
@@ -868,22 +893,26 @@ public class DecibelMeter extends View {
 //            computeCurrentValue();
 //        }
 
-        if (mCurrentValue == mTargetValue) {
-            mCurrentValue = mTargetValue - 15;
-            try {
-                Thread.sleep(75);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        } else {
-            mCurrentValue = mTargetValue;
-            try {
-                Thread.sleep(75);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//        if (mCurrentValue == mTargetValue) {
+//            mCurrentValue = mTargetValue - 15;
+//            try {
+//                Thread.sleep(75);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        } else {
+//            mCurrentValue = mTargetValue;
+//            try {
+//                Thread.sleep(75);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+        if (this.bytes != null) {
+            Log.v("bytes", (((float) this.bytes[0] + 128)*100)/256 + "");
+            mCurrentValue = (((float) this.bytes[0] + 128)*100)/256;
+            invalidate();
         }
-        invalidate();
     }
 
     public void setTargetValue(final float value) {
@@ -906,12 +935,6 @@ public class DecibelMeter extends View {
         float progress = (mScaleEndValue * percentage) / 100;
 
         this.setTargetValue(progress);
-    }
-
-    public void unregisterListener() {
-        if (context != null && mSettingsContentObserver != null) {
-            context.getContentResolver().unregisterContentObserver(mSettingsContentObserver);
-        }
     }
 
 }
