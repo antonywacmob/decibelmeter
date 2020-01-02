@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
         val player = MediaPlayer.create(this, R.raw.music)
         player.setOnPreparedListener {
-            dbMeter.setVisualiser(Visualizer(it.audioSessionId))
+//            dbMeter.setVisualiser(Visualizer(it.audioSessionId))
         }
         player.start()
 

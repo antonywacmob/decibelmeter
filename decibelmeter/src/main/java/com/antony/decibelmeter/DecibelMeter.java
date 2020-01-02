@@ -17,7 +17,6 @@ import android.graphics.PorterDuff;
 import android.graphics.RadialGradient;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-import android.media.audiofx.Visualizer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -174,35 +173,40 @@ public class DecibelMeter extends View {
         this.context = context;
     }
 
-    public void setVisualiser(Visualizer visualizer) {
-        try {
-            visualizer.setEnabled(false);
-            visualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
-
-            visualizer.setDataCaptureListener(new Visualizer.OnDataCaptureListener() {
-
-                @Override
-                public void onWaveFormDataCapture(Visualizer visualizer, byte[] bytes,
-                                                  int samplingRate) {
-
-//                    for (byte aByte : bytes) {
-//                        Log.v("visualizerBytes", aByte + "");
-//                    }
-                    DecibelMeter.this.bytes = bytes;
-                    invalidate();
-                }
-
-                @Override
-                public void onFftDataCapture(Visualizer visualizer, byte[] bytes,
-                                             int samplingRate) {
-                }
-            }, Visualizer.getMaxCaptureRate() / 2, true, false);
-
-            visualizer.setEnabled(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setBytes(byte[] bytes){
+        DecibelMeter.this.bytes = bytes;
+        invalidate();
     }
+
+//    public void setVisualiser(Visualizer visualizer) {
+//        try {
+//            visualizer.setEnabled(false);
+//            visualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
+//
+//            visualizer.setDataCaptureListener(new Visualizer.OnDataCaptureListener() {
+//
+//                @Override
+//                public void onWaveFormDataCapture(Visualizer visualizer, byte[] bytes,
+//                                                  int samplingRate) {
+//
+////                    for (byte aByte : bytes) {
+////                        Log.v("visualizerBytes", aByte + "");
+////                    }
+//                    DecibelMeter.this.bytes = bytes;
+//                    invalidate();
+//                }
+//
+//                @Override
+//                public void onFftDataCapture(Visualizer visualizer, byte[] bytes,
+//                                             int samplingRate) {
+//                }
+//            }, Visualizer.getMaxCaptureRate() / 2, true, false);
+//
+//            visualizer.setEnabled(true);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public DecibelMeter(final Context context, final AttributeSet attrs) {
         this(context, attrs, 0);
